@@ -85,7 +85,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.199"
-        tools:srcCompat="@tools:sample/avatars" />
+        android:src="@drawable/ic_european_union" />
 
     <ImageView
         android:id="@+id/imageView2"
@@ -98,6 +98,6 @@
         app:layout_constraintStart_toStartOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
         app:layout_constraintVertical_bias="0.007"
-        tools:srcCompat="@tools:sample/avatars" />
+        android:src="@drawable/ic_russia" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
