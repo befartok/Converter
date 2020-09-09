@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">Converter</string>
+    <string name="app_name">Конвертер валют</string>
+    <string name="history">История конвертаций</string>
+    <string name="about">О приложении</string>
+    <string name="exit">Выход</string>
+    <string name="btnText">Конвертировать</string>
+    <string name="about_app">Учебное приложение конвертер валют. \n
+        Выполнил Черкасов Алексей. \n
+        Версия 1.0</string>
 </resources>
