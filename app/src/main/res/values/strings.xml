@@ -4,7 +4,21 @@
     <string name="about">О приложении</string>
     <string name="exit">Выход</string>
     <string name="btnText">Конвертировать</string>
-    <string name="about_app">Учебное приложение конвертер валют. \n
+    <string name="about_app">Учебное приложение конвертер валют.\n
         Выполнил Черкасов Алексей. \n
         Версия 1.0</string>
+    <string name="USD">USD</string>
+    <string name="EUR">EUR</string>
+    <string name="GBP">GBP</string>
+    <string name="RUR">RUR</string>
+    <string name="usdR01235">R01235</string>
+    <string name="gbpR01035">R01035</string>
+    <string name="eurR01239">R01239</string>
+    <string name="RU">RU</string>
+    <string name="error">ошибка</string>
+    <string name="Date">Дата</string>
+    <string name="Course">Курс</string>
+    <string name="Amount">Сумма</string>
+    <string name="Currency">Валюта</string>
+    <string name="ResultSum">Итого</string>
 </resources>

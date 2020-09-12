@@ -3,9 +3,6 @@ package com.example.converter
 import android.R
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.Selection.setSelection
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -13,20 +10,16 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
-//import kotlinx.android.synthetic.main.activity_main.*
-
-
 class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
-
 
     private lateinit var courseType: String
     private var currencies = arrayOf("USD", "GBP", "EUR", "RUR")
 
     private lateinit var spinnerStart: Spinner
     private lateinit var spinnerFin: Spinner
-    //private var spinnerFin: Spinner? = null
 
-    //private var textViewMsg: TextView? = null
+    private var currencyStart: String = ""
+    private var currencyFin: String = ""
 
     companion object {
         const val TAG = "Log.d"
@@ -36,89 +29,72 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         super.onCreate(savedInstanceState)
         setContentView(com.example.converter.R.layout.activity_main)
 
-        // val toolbar= findViewById<Toolbar>(R.id.toolbar)
-        // setSupportActionBar(toolbar);
+        initToolbar()
+        initSpinner()
 
+    }
 
-        //init()
+    //устанавливаем toolbar
+    private fun initToolbar() {
+        setSupportActionBar(toolbar)
+        supportActionBar?.apply {
+            title = getString(com.example.converter.R.string.app_name)
+            setDisplayShowHomeEnabled(true)
+            setDisplayUseLogoEnabled(true)
+            setLogo(com.example.converter.R.drawable.ic_money_48)
+        }
+    }
 
+    //устанавливаем toolbar
+    private fun initSpinner() {
         spinnerStart = findViewById(com.example.converter.R.id.startingSpinner)
-        //spinnerStart = this.startingSpinner
 
-        // Create an ArrayAdapter using a simple spinner layout and curencies array
+        // Создаем ArrayAdapter из simple spinner layout и массива валют
         val aa = ArrayAdapter(this, R.layout.simple_spinner_item, currencies)
-        // Set layout to use when the list of choices appear
         aa.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
-        // Set Adapter to Spinner
+        //устанавливаем адаптер в спиннер
         spinnerStart.adapter = aa
+
+        //устанавливаем зачение по умолчанию в спиннер
         spinnerStart.setSelection(2)
 
         spinnerFin = findViewById(com.example.converter.R.id.finishSpinner)
         spinnerFin.onItemSelectedListener = this
 
-        // Create an ArrayAdapter using a simple spinner layout and currencies array
-        //   val aaFin = ArrayAdapter(this, R.layout.simple_spinner_item, currencies)
-        // Set layout to use when the list of choices appear
-        //aaFin.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
-        // Set Adapter to Spinner
         spinnerFin.adapter = aa
-        // spinnerFin.adapter = aaFin
         spinnerFin.setSelection(3)
         spinnerStart.onItemSelectedListener = this
-
     }
 
-    fun init() {
-
-    }
-
-    private var currencyStart: String = ""
-    private var currencyFin: String = ""
+    //определяем код валюты установленной в спиннерах
     override fun onItemSelected(arg0: AdapterView<*>, arg1: View?, position: Int, id: Long) {
 
-        /* val i: Int? = spinnerStart?.selectedItemPosition
-         val j: Int? = spinnerFin?.selectedItemPosition
-
-         currencyStart = currencies[i!!]
-         currencyFin = currencies[j!!]
- */
         val i: Int = spinnerStart.selectedItemPosition
         val j: Int = spinnerFin.selectedItemPosition
 
         currencyStart = currencies[i]
         currencyFin = currencies[j]
 
-
-        Log.d(
-            TAG,
-            "currencyStart= $currencyStart, currencyFin=  $currencyFin"
-        )
-
+        //устанавливаем иконку с флагом на спиннер
         when (currencyStart) {
-            "USD" -> imageView.setImageResource(com.example.converter.R.drawable.ic_united_states)
-            "EUR" -> imageView.setImageResource(com.example.converter.R.drawable.ic_european_union)
-            "GBP" -> imageView.setImageResource(com.example.converter.R.drawable.ic_uk)
-            "RUR" -> imageView.setImageResource(com.example.converter.R.drawable.ic_russia)
+            getString(com.example.converter.R.string.USD) -> imageView.setImageResource(com.example.converter.R.drawable.ic_united_states)
+            getString(com.example.converter.R.string.EUR) -> imageView.setImageResource(com.example.converter.R.drawable.ic_european_union)
+            getString(com.example.converter.R.string.GBP) -> imageView.setImageResource(com.example.converter.R.drawable.ic_uk)
+            getString(com.example.converter.R.string.RUR) -> imageView.setImageResource(com.example.converter.R.drawable.ic_russia)
         }
 
         when (currencyFin) {
-            "USD" -> imageView2.setImageResource(com.example.converter.R.drawable.ic_united_states)
-            "EUR" -> imageView2.setImageResource(com.example.converter.R.drawable.ic_european_union)
-            "GBP" -> imageView2.setImageResource(com.example.converter.R.drawable.ic_uk)
-            "RUR" -> imageView2.setImageResource(com.example.converter.R.drawable.ic_russia)
+            getString(com.example.converter.R.string.USD) -> imageView2.setImageResource(com.example.converter.R.drawable.ic_united_states)
+            getString(com.example.converter.R.string.EUR) -> imageView2.setImageResource(com.example.converter.R.drawable.ic_european_union)
+            getString(com.example.converter.R.string.GBP) -> imageView2.setImageResource(com.example.converter.R.drawable.ic_uk)
+            getString(com.example.converter.R.string.RUR) -> imageView2.setImageResource(com.example.converter.R.drawable.ic_russia)
         }
     }
 
     override fun onNothingSelected(arg0: AdapterView<*>) {
-
     }
 
-/*    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.menu_converter, menu)
-        return true
-    }*/
-
+    //создание меню
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
 
         menu.add(getString(com.example.converter.R.string.history))
@@ -127,65 +103,67 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         return super.onCreateOptionsMenu(menu)
     }
 
+    //обработка нажатий меню
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        // TODO убрать потом
-        Toast.makeText(this, item.title, Toast.LENGTH_SHORT).show()
         when (item.title) {
             getString(com.example.converter.R.string.about) -> startAboutActivity()
             getString(com.example.converter.R.string.history) -> startHistoryActivity()
-
+            getString(com.example.converter.R.string.exit) -> finish()
         }
         return super.onOptionsItemSelected(item)
     }
 
+    //старт активити история конвертаций
     private fun startHistoryActivity() {
-        // Create an Intent to start the AboutI activity
         val historyIntent = Intent(this, HistoryActivity::class.java)
-
-        // Start the new activity.
         startActivity(historyIntent)
     }
 
-
+    //запуск конвертации
     fun runConverting(view: View) {
 
+        //Определяем тип курса
         when {
-            currencyFin == "RUR" && currencyStart != "RUR" -> courseType = "direct"
+            currencyFin == getString(com.example.converter.R.string.RUR)
+                    && currencyStart != getString(com.example.converter.R.string.RUR) -> courseType =
+                "direct"
             currencyStart == currencyFin -> courseType = "self"
-            currencyStart == "RUR" && currencyFin != "RUR" -> courseType = "inverse"
-            currencyStart != "RUR" && currencyFin != "RUR" -> courseType = "cross"
+            currencyStart == getString(com.example.converter.R.string.RUR)
+                    && currencyFin != getString(com.example.converter.R.string.RUR) -> courseType =
+                "inverse"
+            currencyStart != getString(com.example.converter.R.string.RUR)
+                    && currencyFin != getString(com.example.converter.R.string.RUR) -> courseType =
+                "cross"
         }
 
         NewThread(this, currencyStart, currencyFin, courseType).execute()
-
     }
 
+    //старт активити о приложении
     private fun startAboutActivity() {
         val aboutIntent = Intent(this, AboutActivity::class.java)
-
         startActivity(aboutIntent)
     }
 
+    //сохраняем данные от потери при повороте
     override fun onSaveInstanceState(outState: Bundle) {
 
         outState.run {
             putString("KEY_TEXT_VIEW", textView.text.toString())
         }
         outState.run {
-
             putString("KEY_EDIT_TEXT_VIEW", editTextNumberDecimal.text.toString())
         }
         super.onSaveInstanceState(outState)
-
     }
 
+    //считываем данные сохраненные при повороте
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
 
         textView.text = savedInstanceState.get("KEY_TEXT_VIEW").toString()
         editTextNumberDecimal.setText(savedInstanceState.get("KEY_EDIT_TEXT_VIEW").toString())
     }
-
 }
 
 

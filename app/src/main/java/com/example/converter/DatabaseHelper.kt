@@ -12,23 +12,15 @@ class DatabaseHelper(context: Context?) :
         SCHEMA
     ) {
     override fun onCreate(db: SQLiteDatabase) {
-
-        db.execSQL(
-            "CREATE TABLE IF NOT EXISTS $TABLE (" + COLUMN_ID
-                    + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_DATE_AND_TIME
-                    + " TEXT, " + COLUMN_COURSE
-                    + " TEXT, " + COLUMN_SUM_START
-                    + " TEXT, " + COLUMN_CURRENCY_START
-                    + " TEXT, " + COLUMN_SUM_FIN
-                    + " TEXT, " + COLUMN_CURRENCY_FIN + " TEXT);"
-        )
+        createTable(db)
     }
 
+    //удаление таблицы
     fun deleteTable(db: SQLiteDatabase) {
-        db.execSQL("DROP TABLE IF EXISTS $TABLE");
-
+        db.execSQL("DROP TABLE IF EXISTS $TABLE")
     }
 
+    //Создание таблицы
     fun createTable(db: SQLiteDatabase) {
         db.execSQL(
             "CREATE TABLE IF NOT EXISTS $TABLE (" + COLUMN_ID
@@ -41,6 +33,7 @@ class DatabaseHelper(context: Context?) :
         )
     }
 
+    //добавление данных в БД
     fun insertRecordDb(
         db: SQLiteDatabase,
         dateAndTimeValue: String,
@@ -50,14 +43,14 @@ class DatabaseHelper(context: Context?) :
         sumFinValue: String,
         currencyFinValue: String
     ) {
+        //deleteTable(db)
         createTable(db)
 
         db.execSQL(
             "INSERT INTO $TABLE ($COLUMN_DATE_AND_TIME, $COLUMN_COURSE, $COLUMN_SUM_START, $COLUMN_CURRENCY_START, $COLUMN_SUM_FIN, $COLUMN_CURRENCY_FIN ) VALUES " +
                     "('$dateAndTimeValue', '$courseValue', '$sumStartValue', '$currencyStartValue', '$sumFinValue', '$currencyFinValue');"
         )
-/*        db.execSQL("INSERT INTO $TABLE ($COLUMN_DATE_AND_TIME, $COLUMN_COURSE, $COLUMN_SUM_START, $COLUMN_CURRENCY_START, $COLUMN_SUM_FIN, $COLUMN_CURRENCY_FIN ) VALUES " +
-                "('09.09.2020', '76,07', '10,00', 'kzt', '760,70', 'RUR');")*/
+
     }
 
     override fun onUpgrade(
@@ -69,6 +62,7 @@ class DatabaseHelper(context: Context?) :
         onCreate(db)
     }
 
+    //константы
     companion object {
         private const val DATABASE_NAME = "history.db" // название бд
         private const val SCHEMA = 1 // версия базы данных
