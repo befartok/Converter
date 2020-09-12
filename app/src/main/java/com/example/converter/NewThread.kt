@@ -214,7 +214,6 @@ class NewThread(
         val sumStartToPrint = DecimalFormat("#0.00").format(
             sumStart
         )
-        //Log.d(TAG,"formatForDateNow= $dateTimeNow, course=  $course, sumStart= $sumStart, currencyStart = $currencyStart, result= $result, currencyFin= $currencyFin")
 
         //запись в БД
         databaseHelper = DatabaseHelper(activity.applicationContext)

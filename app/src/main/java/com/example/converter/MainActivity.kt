@@ -69,11 +69,11 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     //определяем код валюты установленной в спиннерах
     override fun onItemSelected(arg0: AdapterView<*>, arg1: View?, position: Int, id: Long) {
 
-        val i: Int = spinnerStart.selectedItemPosition
-        val j: Int = spinnerFin.selectedItemPosition
+        val startItem: Int = spinnerStart.selectedItemPosition
+        val finishItem: Int = spinnerFin.selectedItemPosition
 
-        currencyStart = currencies[i]
-        currencyFin = currencies[j]
+        currencyStart = currencies[startItem]
+        currencyFin = currencies[finishItem]
 
         //устанавливаем иконку с флагом на спиннер
         when (currencyStart) {
@@ -155,7 +155,18 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         outState.run {
             putString("KEY_EDIT_TEXT_VIEW", editTextNumberDecimal.text.toString())
         }
+
+        outState.run {
+            putString("SPINNER_START_VIEW", spinnerStart.selectedItemPosition.toString())
+        }
+        outState.run {
+            putString("SPINNER_FINISH_VIEW", spinnerFin.selectedItemPosition.toString())
+        }
+
+
+
         super.onSaveInstanceState(outState)
+
     }
 
     //считываем данные сохраненные при повороте
@@ -163,6 +174,9 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         textView.text = savedInstanceState.get("KEY_TEXT_VIEW").toString()
         editTextNumberDecimal.setText(savedInstanceState.get("KEY_EDIT_TEXT_VIEW").toString())
+        spinnerStart.setSelection(savedInstanceState.get("SPINNER_START_VIEW").toString().toInt())
+        spinnerFin.setSelection(savedInstanceState.get("SPINNER_FINISH_VIEW").toString().toInt())
+
     }
 }
 
