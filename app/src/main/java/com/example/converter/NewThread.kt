@@ -63,7 +63,7 @@ class NewThread(
 
                 try {
                     if (activity.editTextNumberDecimal != null) {
-
+                        //находим итог, форматируя до 2-х знаков после запятой
                         result = DecimalFormat("#0.00").format(
                             course * sumStart
                         )
@@ -74,20 +74,23 @@ class NewThread(
                 }
             }
             //при обмене рублей на валюту
-            "inverse" -> {
+            "inverse" -> {//обратный курс
                 try {
                     doc = Jsoup.connect(url).get()//содинение с URL
+                    //находим содержимое тега id равного коду валюты
                     val body: Element = doc.getElementById(codeOfCurrencyFin)
+                    //находим содержимое тега Value, где содержится курс
                     val value: String? = body.getElementsByTag("Value").text()
                     var readCourse = value.toString()
+                    //меняем запятую на точку в курсе
                     readCourse = readCourse.replace(',', '.', true)
-                    course = readCourse.toDouble()
+                    course = readCourse.toDouble()//найденный курс ЦБ
 
                     try {
                         if (activity.editTextNumberDecimal != null) {
 
                             course = 1 / course //определяем курс обратный курсу ЦБ
-                            //находим результат умножив курс на сумму
+                            //находим итог, форматируя до 2-х знаков после запятой
                             result = DecimalFormat("#0.00").format(
                                 course * sumStart
                             )
@@ -104,7 +107,7 @@ class NewThread(
                 return result
             }
             //при обмене  валюты на рубли
-            "direct" -> {
+            "direct" -> {//прямой курс
                 try {
 
                     doc = Jsoup.connect(url).get()
@@ -116,7 +119,7 @@ class NewThread(
 
                     try {
                         if (activity.editTextNumberDecimal != null) {
-
+                            //находим итог, форматируя до 2-х знаков после запятой
                             result = DecimalFormat("#0.00").format(
                                 course * sumStart
                             )
@@ -131,23 +134,26 @@ class NewThread(
                 }
             }
             //при обмене  валюты на валюту
-            "cross" -> try {
+            "cross" -> try {//кросс-курс
 
                 doc = Jsoup.connect(url).get()
                 val body1: Element = doc.getElementById(codeOfCurrencyStart)
                 val value1: String? = body1.getElementsByTag("Value").text()
                 var course1 = value1.toString()
+                //курс стартовой валюты
                 course1 = course1.replace(',', '.', true)
 
                 val body2: Element = doc.getElementById(codeOfCurrencyFin)
                 val value2: String? = body2.getElementsByTag("Value").text()
                 var course2 = value2.toString()
+                //курс итоговой валюты
                 course2 = course2.replace(',', '.', true)
+                //находим кросс-курс
                 course = course1.toDouble() / course2.toDouble()
 
                 try {
                     if (activity.editTextNumberDecimal != null) {
-
+                        //находим итог, форматируя до 2-х знаков после запятой
                         result = DecimalFormat("#0.00").format(
                             course * sumStart
                         )
@@ -165,6 +171,7 @@ class NewThread(
         return result
     }
 
+    //находим код валют
     private fun findCodeOfCurrencies(currencyStart: String, currencyFin: String) {
         when (currencyStart) {
             context.getString(R.string.USD) -> codeOfCurrencyStart =
@@ -199,6 +206,7 @@ class NewThread(
         }
     }
 
+    //функция записи в БД даты, курса и результата конвертации
     private fun recordToDB(_result: String) {
         //находим текущую дату
         val dateNow = Date()
@@ -218,7 +226,6 @@ class NewThread(
         //запись в БД
         databaseHelper = DatabaseHelper(activity.applicationContext)
         db = databaseHelper.writableDatabase
-        //databaseHelper.createTable(db!!)
         databaseHelper.insertRecordDb(
             db!!,
             dateTimeNow.toString(),
